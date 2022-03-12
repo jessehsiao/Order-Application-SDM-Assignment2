@@ -13,14 +13,24 @@
     <script>
 
       $(document).ready(function(){
-          $("button").click(function(){
+          $("#btn1").click(function(){
               // Get value from input element on the page
               var name = $("#searchName").val();
               // Send the input data to the server using get
 
-              $.get("ajax_page.php", {name: name} , function(data){
+              $.get("ajax_page.php", {name: name} , function(response){
                   // Display the returned data in browser
-                  $("#result").html(data);
+                  
+                  data = JSON.parse(response)
+                  var s=""
+
+                  console.log(data)
+
+                  for (let i = 0; i < data.length; i++){
+                    s += "<tr><th scope='row'><a href='second_page.php?id="+data[i].ID+"'>"+data[i].ID+"</a></th><td>"+data[i].customer+"</td></tr>"; 
+                  }
+                  
+                  $("#result").html(s);
               });
           });
       });
@@ -33,13 +43,13 @@
   <body>
 
     
-    <div class="container">
+  <div class="container">
       <h1 class="text-center">Order application</h1>
 
       <div class="input-group mb-3">
         <input type="text" class="form-control" id="searchName" placeholder="Search by name" aria-label="Recipient's username" aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Search</button>
+          <button class="btn btn-outline-secondary" type="button" id="btn1">Search</button>
         </div>
       </div>
 
